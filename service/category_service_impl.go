@@ -7,12 +7,14 @@ import (
 	"golangpzn-restfulapi/model/domain"
 	"golangpzn-restfulapi/model/web"
 	"golangpzn-restfulapi/repository"
+
+	"github.com/go-playground/validator"
 )
 
 type CategoryServiceImpl struct {
 	CategoryRepository repository.CategoryRepository
 	DB                 *sql.DB
-	//Validate           *validator.Validate
+	Validate           *validator.Validate
 }
 
 // func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sql.DB, validate *validator.Validate) CategoryService {
@@ -24,8 +26,8 @@ type CategoryServiceImpl struct {
 // }
 
 func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
-	// err := service.Validate.Struct(request)
-	// helper.PanicIfError(err)
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
 
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
@@ -41,8 +43,8 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 }
 
 func (service *CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse {
-	// err := service.Validate.Struct(request)
-	// helper.PanicIfError(err)
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
 
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
